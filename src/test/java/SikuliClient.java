@@ -5,6 +5,7 @@ public class SikuliClient {
 
 	public SikuliClient(String severAddress) {
 		this.serverAddress = severAddress;
+		System.out.println("Sikuli server is "+"http://" + serverAddress + ":4567");
 	}
 
 	public void clickUsingSikuliSever(String imageName) {

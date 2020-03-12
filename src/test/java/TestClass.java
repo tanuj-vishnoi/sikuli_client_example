@@ -13,10 +13,12 @@ import org.testng.annotations.Test;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class TestClass {
+	
+	String sikuliServerAddress = "localhost";
 
 	@Test
 	public void test1() {
-		ActionsClass actions = new ActionsClass(getDriver());
+		ActionsClass actions = new ActionsClass(getRemoteDriver());
 		actions.launchApplication("https://canvasjs.com/docs/charts/chart-options/");
 		actions.maximizeBrower();
 		actions.driver.switchTo().frame(actions.driver.findElement(By.id("preview1")));
@@ -25,7 +27,7 @@ public class TestClass {
 		/**
 		 * this should be ip of node
 		 */
-		SikuliClient sikuliClient = new SikuliClient("localhost");
+		SikuliClient sikuliClient = new SikuliClient(sikuliServerAddress);
 		sikuliClient.clickUsingSikuliSever("90.png");
 		System.out.println("**********"+actions.driver.findElements(By.cssSelector("[class=\"canvasjs-chart-tooltip\"]")).get(0).getText());
 		
@@ -40,15 +42,18 @@ public class TestClass {
 	
 	public WebDriver getRemoteDriver() {
 		RemoteWebDriver  driver = null;
-		DesiredCapabilities cap = new DesiredCapabilities();
-		cap.setBrowserName("chrome");
+		DesiredCapabilities cap = DesiredCapabilities.chrome();
+		
 		try {
-			driver =  new  RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), cap);
+			driver =  new  RemoteWebDriver(new URL("http://10.0.10.133:4445/wd/hub"), cap);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		SessionId s = driver.getSessionId();
+		HtttpGetCall get = new HtttpGetCall();
+		String sikuliServer = get.getSeleniumNodeIPAddress("http://10.0.10.133:4445", s.toString());
+		this.sikuliServerAddress = sikuliServer;
 		return driver;
 		
 		
