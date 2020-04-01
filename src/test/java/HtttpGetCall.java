@@ -20,4 +20,9 @@ public class HtttpGetCall {
 		System.out.println(nodeAddress);
 		return nodeAddress.split("//")[1].split(":")[0];
 	}
+	
+	
+	public Response getRequest(String url,Object body) {
+		return RestAssured.given().log().all().body(body).post(url).then().extract().response();
+	}
 }

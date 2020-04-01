@@ -22,6 +22,11 @@ public class ActionsClass {
 		((JavascriptExecutor) driver).executeScript(
 				"arguments[0].scrollIntoView(true);", element);
 	}
+	
+	protected void scrollInBetween(WebElement element) {
+		((JavascriptExecutor) driver).executeScript(
+				"arguments[0].scrollIntoView(false);", element);
+	}
 
 	
 }

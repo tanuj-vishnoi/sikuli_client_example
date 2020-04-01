@@ -1,0 +1,14 @@
+[
+    {
+        "pixel": 260,
+        "imageName": "header.png"
+    },
+    {
+        "pixel": 100,
+        "imageName": "footer.png"
+    },
+    {
+        "pixel": 2,
+        "imageName": "color.png"
+    }
+]
