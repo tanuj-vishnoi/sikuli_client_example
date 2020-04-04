@@ -14,6 +14,11 @@ public class ActionsClass {
 		this.driver.get(url);
 	}
 	
+	public void closeSession() {
+		this.driver.close();
+		this.driver.quit();
+	}
+	
 	public void maximizeBrower() {
 		this.driver.manage().window().maximize();
 	}

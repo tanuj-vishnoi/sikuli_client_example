@@ -11,7 +11,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionId;
-import org.testng.annotations.Test;
 
 import com.jayway.jsonpath.JsonPath;
 
@@ -20,10 +19,20 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class TestClass {
 	
 	String sikuliServerAddress = "localhost";
+	
+	// set the grid address
+	static String  remoteServerAddress="http://10.0.10.133:4445";
 
+	// if you dont have testng then un comment this method and comment all the @test annotattions like //@Test
+	public static void main(String...a) throws IOException {
+		TestClass test  = new TestClass();
+		test.test1();
+		test.test2();
+	}
+	
 	//@Test
 	public void test1() {
-		ActionsClass actions = new ActionsClass(getRemoteDriver());
+		ActionsClass actions = new ActionsClass(getDriver());
 		actions.launchApplication("https://canvasjs.com/docs/charts/chart-options/");
 		actions.maximizeBrower();
 		actions.driver.switchTo().frame(actions.driver.findElement(By.id("preview1")));
@@ -35,10 +44,10 @@ public class TestClass {
 		SikuliClient sikuliClient = new SikuliClient(sikuliServerAddress);
 		sikuliClient.clickUsingSikuliSever("90.png");
 		System.out.println("**********"+actions.driver.findElements(By.cssSelector("[class=\"canvasjs-chart-tooltip\"]")).get(0).getText());
-		
+		actions.closeSession();
 	}
 	
-	@Test
+	//@Test
 	public void test2() throws IOException {
 		ActionsClass actions = new ActionsClass(getDriver());
 		actions.launchApplication("https://canvasjs.com/docs/charts/chart-options/");
@@ -69,14 +78,14 @@ public class TestClass {
 		//cap.setBrowserName("chrome");
 		System.out.println(cap);
 		try {
-			driver =  new  RemoteWebDriver(new URL("http://10.0.10.133:4445/wd/hub"), cap);
+			driver =  new  RemoteWebDriver(new URL(remoteServerAddress+"/wd/hub"), cap);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		SessionId s = driver.getSessionId();
 		HtttpGetCall get = new HtttpGetCall();
-		String sikuliServer = get.getSeleniumNodeIPAddress("http://10.0.10.133:4445", s.toString());
+		String sikuliServer = get.getSeleniumNodeIPAddress(remoteServerAddress, s.toString());
 		this.sikuliServerAddress = sikuliServer;
 		return driver;
 	}
